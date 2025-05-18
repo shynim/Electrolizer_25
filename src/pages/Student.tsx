@@ -138,7 +138,7 @@ const playWelcomeAudio = (studentId: number) => {
             zIndex: 1,
             width: '100%',
             maxWidth: '1000px',
-            transform: imageGlitch ? 'translateX(5px)' : 'translateX(0)',
+            transform: imageGlitch ? 'translateX(6px)' : 'translateX(0)',
             transition: 'transform 0.1s ease'
           }}>
             <img
@@ -166,7 +166,7 @@ const playWelcomeAudio = (studentId: number) => {
                 top: 0,
                 left: 0,
                 right: 0,
-                height: '20%',
+                height: '0%',
                 background: 'linear-gradient(to bottom, rgba(255,0,255,0.3), transparent)',
                 zIndex: 3
               }} />
@@ -201,7 +201,7 @@ const playWelcomeAudio = (studentId: number) => {
                 </div>
                 <div className="cyberpunk-footer">
                   <div className="cyberpunk-line left-line"></div>
-                  <div className="cyberpunk-status">SYSTEM:ACTIVE</div>
+                  <div className="cyberpunk-status">................</div>
                   <div className="cyberpunk-line right-line"></div>
                 </div>
               </div>
