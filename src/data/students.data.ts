@@ -95,7 +95,7 @@ export const STUDENTS = [
   { id: 158,  name: "H.D.M.Kalhara", photo: "/158.PNG",  team: "Chrome Crusaders" },
   { id: 222,  name: "K.V.T. Manuranga", photo: "/222.PNG",  team: "Chrome Crusaders" },
   { id: 279,  name: "L.N.N. Premasiri", photo: "/279.PNG",  team: "Chrome Crusaders" },
-  { id: 278,  name: "#N/A", photo: "/278.PNG",  team: "Chrome Crusaders" },
+  { id: 278,  name: "Pramodya Lahiru", photo: "/278.PNG",  team: "Chrome Crusaders" },
   { id: 415,  name: "T.Vishal", photo: "/415.PNG",  team: "Chrome Crusaders" },
   { id: 433,  name: "W.M.M.Wickramanayake", photo: "/433.PNG",  team: "Chrome Crusaders" },
   

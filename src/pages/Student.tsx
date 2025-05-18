@@ -7,7 +7,7 @@ export default function StudentQRScanner() {
   const [studentId, setStudentId] = useState<string | null>(null);
   const [error, setError] = useState<string>("");
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
-  const [hasScanned, setHasScanned] = useState(false); // New state to track first scan
+  const [hasScanned, setHasScanned] = useState(false);
 
   const student = STUDENTS.find((std) => std.id === Number(studentId));
 
@@ -48,7 +48,7 @@ export default function StudentQRScanner() {
   const handleScan = (result: any) => {
     const scannedId = result[0].rawValue;
     setStudentId(scannedId);
-    setHasScanned(true); // Set flag when first scan occurs
+    setHasScanned(true);
     const std = STUDENTS.find((std) => std.id === Number(scannedId));
     if (std) playWelcomeAudio(std.id);
   };
@@ -71,38 +71,64 @@ export default function StudentQRScanner() {
           width: '100%',
           height: '100%',
           objectFit: 'cover',
-          zIndex: 1
+          zIndex: 1,
+          filter: 'grayscale(0%) contrast(75%) brightness(100%)',
         }}
       >
         <source src="/background-video.mp4" type="video/mp4" />
         <img src="/default.jpg" alt="Fallback Background" />
       </video>
 
-      {/* Student Photo (only shown after first scan) */}
-      {hasScanned && student?.photo && (
-        <div style={{
-          position: 'absolute',
-          top: '50%',
-          left: '25%',
-          transform: 'translate(-50%, -50%)',
-          zIndex: 2,
-          width: '40%',
-          maxWidth: '550px'
-        }}>
-          <img
-            src={student.photo}
-            alt="Student"
-            style={{
-              width: '100%',
-              height: 'auto',
-              borderRadius: '8px',
-              boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
-            }}
-          />
-        </div>
+      {/* Student Photo and Additional Image (shown after scan) */}
+      {hasScanned && (
+        <>
+          {/* Student Photo */}
+          {student?.photo && (
+            <div style={{
+              position: 'absolute',
+              top: '50%',
+              left: '25%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 2,
+              width: '40%',
+              maxWidth: '550px'
+            }}>
+              <img
+                src={student.photo}
+                alt="Student"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
+                }}
+              />
+            </div>
+          )}
+
+          {/* Additional Image */}
+          <div style={{
+            position: 'absolute',
+            top: '-15%', // Adjust position as needed
+            right: '-7%', // Adjust position as needed
+            zIndex: 2,
+            width: '100%', // Adjust size as needed
+            maxWidth: '1000px'
+          }}>
+            <img
+              src="/title.png" // Your additional image path
+              alt="Additional Content"
+              style={{
+                width: '100%',
+                height: 'auto',
+
+              }}
+            />
+          </div>
+        </>
       )}
 
-      {/* Name Display (only shown after first scan) */}
+      {/* Name Display (shown after scan) */}
       {hasScanned && student && (
         <div style={{
           position: "relative",
@@ -140,7 +166,7 @@ export default function StudentQRScanner() {
       {/* Hidden Scanner */}
       <div style={{ display: "none" }}>
         <Scanner
-          onScan={handleScan} // Updated to use new handler
+          onScan={handleScan}
           scanDelay={100}
           onError={(error) => setError(error as string)}
         />
