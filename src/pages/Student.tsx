@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Scanner } from "@yudiel/react-qr-scanner";
 import { STUDENTS } from "../data/students.data";
+import "./styles.css";
 
 export default function StudentQRScanner() {
   const [studentId, setStudentId] = useState<string | null>(null);
@@ -8,6 +9,21 @@ export default function StudentQRScanner() {
   const [audio, setAudio] = useState<HTMLAudioElement | null>(null);
 
   const student = STUDENTS.find((std) => std.id === Number(studentId));
+
+  const [glitchActive, setGlitchActive] = useState(false)
+
+  // Random glitch effect
+  useEffect(() => {
+    const glitchInterval = setInterval(
+      () => {
+        setGlitchActive(true)
+        setTimeout(() => setGlitchActive(false), 150)
+      },
+      Math.random() * 5000 + 3000,
+    )
+
+    return () => clearInterval(glitchInterval)
+  }, [])
 
   // Clean up audio when component unmounts
   useEffect(() => {
@@ -37,7 +53,7 @@ export default function StudentQRScanner() {
     }}>
       {/* Backdrop/Template Image (fills entire screen) */}
       <img
-        src="/backdrop-template.jpg" // Your template image path
+        src="/default.jpg" // Your template image path
         alt="Event Backdrop"
         style={{
           position: 'absolute',
@@ -51,45 +67,72 @@ export default function StudentQRScanner() {
       {/* Student Photo (appears above backdrop) */}
       <div style={{
         position: 'absolute',
-        width: '100%',
-        height: '100%',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: 2
+        top: '50%',
+        left: '25%',
+        transform: 'translate(-50%, -50%)',
+        zIndex: 2,
+        width: '40%',
+        maxWidth: '500px'
       }}>
         <img
-          src={student ? student.photo : "/default.jpg"}
+          src={student?.photo || "/default.jpg"}
           alt="Student"
           style={{
-            width: '60%', // Adjust size as needed
+            width: '100%',
             height: 'auto',
-            maxHeight: '70%',
-            objectFit: 'contain',
-            border: '4px solid white',
             borderRadius: '8px',
-            boxShadow: '0 0 20px rgba(0,0,0,0.5)'
+            boxShadow: '0 4px 8px rgba(0,0,0,0.2)'
           }}
         />
       </div>
 
+
       {/* Name Display (on template) */}
       {student && (
         <div style={{
-          position: 'absolute',
-          bottom: '20%', // Position on template where name should appear
-          left: 0,
-          right: 0,
-          textAlign: 'center',
-          color: 'white',
-          fontSize: '2rem',
-          fontWeight: 'bold',
-          textShadow: '2px 2px 4px #000',
-          zIndex: 3
+          position: "relative",
+          minHeight: "100vh",
+          padding: "16px",
+          background: "linear-gradient(to bottom, #111827, #000000)",
         }}>
-          {student.name}
+          <div className={`cyberpunk-container`}>
+            {/* Animated border effect */}
+            <div className="cyberpunk-border"></div>
+
+            {/* Main container */}
+            <div className={`cyberpunk-box ${glitchActive ? "glitch-active" : ""}`}>
+              {/* Circuit pattern overlay */}
+              <div className="circuit-pattern"></div>
+
+              {/* Content */}
+              <div className="cyberpunk-content">
+                {/* Username */}
+                <div className="cyberpunk-field">
+                  <div className="cyberpunk-label username-label">Username</div>
+                  <div className={`cyberpunk-username ${glitchActive ? "glitch-active" : ""}`}>
+                    {student.name}
+                    <span className="ping-dot"></span>
+                  </div>
+                </div>
+
+                {/* Team name */}
+                <div className="cyberpunk-field">
+                  <div className="cyberpunk-label team-label">Team</div>
+                  <div className={`cyberpunk-badge ${glitchActive ? "glitch-active" : ""}`}>{student.team}</div>
+                </div>
+
+                {/* Decorative elements */}
+                <div className="cyberpunk-footer">
+                  <div className="cyberpunk-line left-line"></div>
+                  <div className="cyberpunk-status">SYSTEM:ACTIVE</div>
+                  <div className="cyberpunk-line right-line"></div>
+                </div>
+              </div >
+            </div >
+          </div >
         </div>
-      )}
+      )
+      }
 
       {/* Hidden Scanner */}
       <div style={{ display: "none" }}>
@@ -105,20 +148,22 @@ export default function StudentQRScanner() {
         />
       </div>
 
-      {error && (
-        <p style={{
-          position: 'absolute',
-          bottom: '10px',
-          left: 0,
-          right: 0,
-          color: 'red',
-          fontWeight: 'bold',
-          textAlign: 'center',
-          zIndex: 3
-        }}>
-          {error}
-        </p>
-      )}
-    </div>
+      {
+        error && (
+          <p style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: 0,
+            right: 0,
+            color: 'red',
+            fontWeight: 'bold',
+            textAlign: 'center',
+            zIndex: 3
+          }}>
+            {error}
+          </p>
+        )
+      }
+    </div >
   );
 }

@@ -1,0 +1,222 @@
+/* Container styles */
+.cyberpunk-container {
+  position: absolute;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  z-index: 10;
+  right:7%;
+  bottom: 20%;
+}
+
+/* Animated border */
+.cyberpunk-border {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, #06b6d4, #d946ef, #facc15);
+  opacity: 0.7;
+  filter: blur(8px);
+  animation: pulse 3s infinite alternate;
+}
+
+/* Main box */
+.cyberpunk-box {
+  position: relative;
+  border: 1px solid rgba(6, 182, 212, 0.5);
+  background-color: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(4px);
+  padding: 24px;
+  border-radius: 6px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+}
+
+/* Pseudo-elements for the offset borders */
+.cyberpunk-box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 6px;
+  transform: translate(4px, 4px);
+}
+
+.cyberpunk-box::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(217, 70, 239, 0.3);
+  border-radius: 6px;
+  transform: translate(-4px, -4px);
+}
+
+/* Circuit pattern overlay */
+.circuit-pattern {
+  position: absolute;
+  inset: 0;
+  opacity: 0.1;
+  border-radius: 6px;
+  overflow: hidden;
+  background-image: radial-gradient(circle, transparent 20%, #000 20%, #000 80%, transparent 80%, transparent),
+    radial-gradient(circle, transparent 20%, #000 20%, #000 80%, transparent 80%, transparent),
+    linear-gradient(#222 2px, transparent 2px), linear-gradient(90deg, #222 2px, transparent 2px);
+  background-size: 50px 50px, 50px 50px, 25px 25px, 25px 25px;
+  background-position: 0 0, 25px 25px, 0 -1px, -1px 0;
+}
+
+/* Content container */
+.cyberpunk-content {
+  position: relative;
+  z-index: 10;
+}
+
+/* Field container */
+.cyberpunk-field {
+  margin-bottom: 16px;
+}
+
+/* Labels */
+.cyberpunk-label {
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-family: monospace;
+  margin-bottom: 4px;
+}
+
+.username-label {
+  color: #06b6d4; /* cyan-400 */
+}
+
+.team-label {
+  color: #d946ef; /* fuchsia-400 */
+}
+
+/* Username styling */
+.cyberpunk-username {
+  font-size: 40px;
+  font-weight: bold;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+  color: white;
+  position: relative;
+  display: inline-block;
+}
+
+.cyberpunk-username::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, #06b6d4, #d946ef);
+}
+
+/* Ping dot animation */
+.ping-dot {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  height: 4px;
+  width: 4px;
+  background-color: #06b6d4;
+  border-radius: 50%;
+  animation: ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* Team badge */
+.cyberpunk-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 30px;
+  font-family: monospace;
+  background: linear-gradient(to right, rgba(131, 24, 67, 0.8), rgba(8, 145, 178, 0.8));
+  border: 1px solid rgba(217, 70, 239, 0.5);
+  color: #fce7f3; /* fuchsia-100 */
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(219, 39, 119, 0.3);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cyberpunk-badge:hover {
+  background: linear-gradient(to right, rgba(157, 23, 77, 0.8), rgba(14, 165, 233, 0.8));
+}
+
+/* Footer decoration */
+.cyberpunk-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 16px;
+  padding-top: 8px;
+  border-top: 1px dashed rgba(6, 182, 212, 0.5);
+}
+
+.cyberpunk-line {
+  height: 4px;
+  width: 48px;
+  border-radius: 9999px;
+}
+
+.left-line {
+  background: linear-gradient(to right, #06b6d4, transparent);
+}
+
+.right-line {
+  background: linear-gradient(to left, #d946ef, transparent);
+}
+
+.cyberpunk-status {
+  font-size: 12px;
+  color: #facc15; /* yellow-400 */
+  font-family: monospace;
+}
+
+/* Glitch effect */
+.glitch-active {
+  transform: translate(1px, -1px);
+  transition: none;
+}
+
+.cyberpunk-username.glitch-active {
+  color: #d946ef;
+}
+
+.cyberpunk-badge.glitch-active {
+  transform: translateY(1px);
+  color: #67e8f9; /* cyan-300 */
+}
+
+/* Animations */
+@keyframes pulse {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes ping {
+  75%,
+  100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* Responsive adjustments */
+@media (max-width: 640px) {
+  .cyberpunk-box {
+    padding: 16px;
+  }
+
+  .cyberpunk-username {
+    font-size: 20px;
+  }
+
+  .cyberpunk-badge {
+    font-size: 16px;
+  }
+}
