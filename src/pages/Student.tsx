@@ -38,22 +38,35 @@ export default function StudentQRScanner() {
 
   // Clean up audio when component unmounts
   useEffect(() => {
-    return () => {
-      if (audio) {
-        audio.pause();
-      }
-    };
-  }, [audio]);
+  return () => {
+    if (audio) {
+      audio.pause();
+      audio.src = ''; // Release audio resource
+    }
+  };
+}, [audio]);
 
-  const playWelcomeAudio = (studentId: number) => {
-    if (audio) audio.pause();
-    const newAudio = new Audio(`/welcome-audios/${studentId}.mp3`);
-    setAudio(newAudio);
+const playWelcomeAudio = (studentId: number) => {
+  if (audio) {
+    audio.pause();
+    audio.src = ''; // Clean up previous audio
+  }
+
+  const newAudio = new Audio(`/welcome-audios/${studentId}.mp3`);
+  setAudio(newAudio);
+
+  // Add delay (2 seconds in this example)
+  const delay = 400; // milliseconds
+  const playTimer = setTimeout(() => {
     newAudio.play().catch(e => {
       console.error("Audio playback failed:", e);
       setError(`Audio file for student ${studentId} not found`);
     });
-  };
+  }, delay);
+
+  // Cleanup timer if component unmounts
+  return () => clearTimeout(playTimer);
+};
 
   const handleScan = (result: any) => {
     const scannedId = result[0].rawValue;
