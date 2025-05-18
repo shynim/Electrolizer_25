@@ -26,6 +26,16 @@ export default function StudentQRScanner() {
     return () => clearInterval(glitchInterval);
   }, []);
 
+  const [imageGlitch, setImageGlitch] = useState(false);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setImageGlitch(true);
+      setTimeout(() => setImageGlitch(false), 100 + Math.random() * 200);
+    }, 3000 + Math.random() * 5000);
+    return () => clearInterval(interval);
+  }, []);
+
   // Clean up audio when component unmounts
   useEffect(() => {
     return () => {
@@ -79,6 +89,7 @@ export default function StudentQRScanner() {
         <img src="/default.jpg" alt="Fallback Background" />
       </video>
 
+
       {/* Student Photo and Additional Image (shown after scan) */}
       {hasScanned && (
         <>
@@ -109,21 +120,44 @@ export default function StudentQRScanner() {
           {/* Additional Image */}
           <div style={{
             position: 'absolute',
-            top: '-15%', // Adjust position as needed
-            right: '-7%', // Adjust position as needed
-            zIndex: 2,
-            width: '100%', // Adjust size as needed
-            maxWidth: '1000px'
+            top: '-12%',
+            right: '-7%',
+            zIndex: 1,
+            width: '100%',
+            maxWidth: '1000px',
+            transform: imageGlitch ? 'translateX(5px)' : 'translateX(0)',
+            transition: 'transform 0.1s ease'
           }}>
             <img
-              src="/title.png" // Your additional image path
+              src="/title.png"
               alt="Additional Content"
               style={{
                 width: '100%',
                 height: 'auto',
-
+                
+                boxShadow: imageGlitch
+                  ? '0 0 15px #f0f, 0 0 30px #f0f'
+                  : '0 0 10px #0ff, 0 0 20px #0ff',
+                filter: imageGlitch
+                  ? 'contrast(200%) brightness(1.5)'
+                  : 'contrast(150%) brightness(1.2)',
+                clipPath: imageGlitch
+                  ? 'polygon(0 0, 100% 0, 100% 80%, 0 80%)'
+                  : 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                transition: 'all 0.3s ease'
               }}
             />
+            {imageGlitch && (
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: '20%',
+                background: 'linear-gradient(to bottom, rgba(255,0,255,0.3), transparent)',
+                zIndex: 3
+              }} />
+            )}
           </div>
         </>
       )}
