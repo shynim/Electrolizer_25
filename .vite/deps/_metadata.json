@@ -1,0 +1,37 @@
+{
+  "hash": "8d467a89",
+  "configHash": "b970b3a1",
+  "lockfileHash": "fdd103ab",
+  "browserHash": "0366ebb0",
+  "optimized": {
+    "react/jsx-dev-runtime": {
+      "src": "../../node_modules/react/jsx-dev-runtime.js",
+      "file": "react_jsx-dev-runtime.js",
+      "fileHash": "f9e9057d",
+      "needsInterop": true
+    },
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "38689437",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "571695c6",
+      "needsInterop": true
+    },
+    "@yudiel/react-qr-scanner": {
+      "src": "../../node_modules/@yudiel/react-qr-scanner/dist/esm/index.js",
+      "file": "@yudiel_react-qr-scanner.js",
+      "fileHash": "8172e2f1",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-UTEJFLXC": {
+      "file": "chunk-UTEJFLXC.js"
+    }
+  }
+}
