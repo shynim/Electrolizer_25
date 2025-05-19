@@ -38,43 +38,57 @@ export default function StudentQRScanner() {
 
   // Clean up audio when component unmounts
   useEffect(() => {
-  return () => {
+    return () => {
+      if (audio) {
+        audio.pause();
+        audio.src = ''; // Release audio resource
+      }
+    };
+  }, [audio]);
+
+  const playWelcomeAudio = (studentId: number) => {
     if (audio) {
       audio.pause();
-      audio.src = ''; // Release audio resource
+      audio.src = ''; // Clean up previous audio
     }
+
+    const newAudio = new Audio(`/welcome-audios/${studentId}.mp3`);
+    setAudio(newAudio);
+
+    // Add delay (2 seconds in this example)
+    const delay = 400; // milliseconds
+    const playTimer = setTimeout(() => {
+      newAudio.play().catch(e => {
+        console.error("Audio playback failed:", e);
+        setError(`Audio file for student ${studentId} not found`);
+      });
+    }, delay);
+
+    // Cleanup timer if component unmounts
+    return () => clearTimeout(playTimer);
   };
-}, [audio]);
-
-const playWelcomeAudio = (studentId: number) => {
-  if (audio) {
-    audio.pause();
-    audio.src = ''; // Clean up previous audio
-  }
-
-  const newAudio = new Audio(`/welcome-audios/${studentId}.mp3`);
-  setAudio(newAudio);
-
-  // Add delay (2 seconds in this example)
-  const delay = 400; // milliseconds
-  const playTimer = setTimeout(() => {
-    newAudio.play().catch(e => {
-      console.error("Audio playback failed:", e);
-      setError(`Audio file for student ${studentId} not found`);
-    });
-  }, delay);
-
-  // Cleanup timer if component unmounts
-  return () => clearTimeout(playTimer);
-};
 
   const handleScan = (result: any) => {
-    const scannedId = result[0].rawValue;
-    setStudentId(scannedId);
-    setHasScanned(true);
-    const std = STUDENTS.find((std) => std.id === Number(scannedId));
-    if (std) playWelcomeAudio(std.id);
-  };
+  const scannedId = result[0].rawValue;
+  setStudentId(scannedId);
+  setHasScanned(true);
+
+  const std = STUDENTS.find((std) => std.id === Number(scannedId));
+  if (std) playWelcomeAudio(std.id);
+
+  fetch("http://127.0.0.1:5000/qr-scan", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ studentId: scannedId }),
+  })
+    .then((response: Response) => response.json())
+    .then((data) => {
+      console.log("Success:", data);
+    })
+    .catch((error) => {
+      console.error("Failed to notify backend:", error);
+    });
+};
 
   return (
     <div style={{
@@ -147,7 +161,7 @@ const playWelcomeAudio = (studentId: number) => {
               style={{
                 width: '100%',
                 height: 'auto',
-                
+
                 boxShadow: imageGlitch
                   ? '0 0 15px #f0f, 0 0 30px #f0f'
                   : '0 0 10px #0ff, 0 0 20px #0ff',
